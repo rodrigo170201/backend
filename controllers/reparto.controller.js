@@ -65,9 +65,7 @@ exports.insertReparto = async (req, res) => {
         res.redirect(`/movies`); // Cambia esto según tu ruta de lista de repartos
 
     } catch (error) {
-        // Manejo de errores
         console.error('Error al crear reparto:', error);
-        // Renderizar el formulario con el error
         res.render('reparto/form.ejs', { reparto: req.body, errors: error, movieId });
     }
 };
@@ -83,7 +81,7 @@ exports.getPersonasByMovieId = async (req, res) => {
             include: [
                 {
                     model: db.personas,
-                    as: "persona"  // Incluir la información de las personas en el reparto
+                    as: "persona"  
                 }
             ]
         });

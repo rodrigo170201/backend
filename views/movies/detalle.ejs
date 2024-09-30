@@ -29,7 +29,7 @@
                         <h5>Tráiler</h5>
                         <iframe src="https://www.youtube.com/embed/<%= movie.linkTrailer.split('v=')[1] %>" 
                                 width="100%" 
-                                height="100%" 
+                                height="95%" 
                                 frameborder="0" 
                                 allowfullscreen>
                         </iframe>
@@ -98,7 +98,7 @@
                 },
                 error: function() {
                     // Manejar errores de la solicitud AJAX
-                    $('#repartoMessage').text('Hubo un error al cargar el reparto. Inténtalo de nuevo más tarde.');
+                    $('#repartoMessage').text('No hay personas en esta pelicula');
                     $('#repartoList').hide(); // Ocultar la lista en caso de error
                 }
             });

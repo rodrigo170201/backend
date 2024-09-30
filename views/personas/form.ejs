@@ -1,0 +1,56 @@
+<%- include('../../components/header.ejs') %>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6 col-md-8 col-sm-10 col-xxl-4">
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h5 class="card-title"><%= persona ? 'Actualizar' : 'Crear' %> Persona</h5>
+                    <form method="post" action="/personas<%= persona ? '/' + persona.id + '/edit' : '/create' %>">
+                        <% if (errors) { %>
+                            <div class="alert alert-warning">
+                                <%= errors.message %>
+                            </div>
+                        <% } %>
+                        
+                        <div class="mt-2">
+                            <label>Nombre</label>
+                            <input required class="form-control" type="text" name="nombre" placeholder="Nombre" value="<%= persona && persona.nombre %>">
+                            <% if (errors?.nombre) { %>
+                                <div class="error-label">
+                                    Por favor ingrese un nombre
+                                </div>
+                            <% } %>
+                        </div>
+
+                        <div class="mt-2">
+                            <label>Apellido</label>
+                            <input required class="form-control" type="text" name="apellido" placeholder="Apellido" value="<%= persona && persona.apellido %>">
+                            <% if (errors?.apellido) { %>
+                                <div class="error-label">
+                                    Por favor ingrese un apellido
+                                </div>
+                            <% } %>
+                        </div>
+
+                        <div class="mt-2">
+                            <label>Fecha de Nacimiento</label>
+                            <input class="form-control" type="date" name="fechaNacimiento" value="<%= persona && persona.fechaNacimiento ? persona.fechaNacimiento.toISOString().split('T')[0] : '' %>">
+                        </div>
+
+                        <div class="mt-2">
+                            <label>Lugar de Nacimiento</label>
+                            <input class="form-control" type="text" name="lugarNacimiento" placeholder="Lugar de Nacimiento" value="<%= persona && persona.lugarNacimiento %>">
+                        </div>
+
+                        <div class="mt-2">
+                            <input class="btn btn-primary" type="submit" value="<%= persona ? 'Actualizar' : 'Crear' %>">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../../components/footer.ejs') %>

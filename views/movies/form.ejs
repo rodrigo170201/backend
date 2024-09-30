@@ -1,0 +1,78 @@
+<%- include('../../components/header.ejs') %>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6 col-md-8 col-sm-10 col-xxl-4">
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h5 class="card-title"><%= movie ? 'Actualizar' : 'Crear' %> Película</h5>
+                    <form method="post" action="/movies<%= movie ? '/' + movie.id + '/edit' : '/create' %>">
+                        <% if (errors) { %>
+                            <div class="alert alert-warning">
+                                <%= errors.message %>
+                            </div>
+                        <% } %>
+
+                        <div class="mt-2">
+                            <label>Nombre</label>
+                            <input required class="form-control" type="text" name="nombre" placeholder="Nombre" value="<%= movie && movie.nombre %>">
+                            <% if (errors?.nombre) { %>
+                                <div class="error-label">
+                                    Por favor ingrese un nombre
+                                </div>
+                            <% } %>
+                        </div>
+
+                        <div class="mt-2">
+                            <label>Sinopsis</label>
+                            <textarea required class="form-control" name="sinopsis" placeholder="Sinopsis"><%= movie && movie.sinopsis %></textarea>
+                            <% if (errors?.sinopsis) { %>
+                                <div class="error-label">
+                                    Por favor ingrese una sinopsis
+                                </div>
+                            <% } %>
+                        </div>
+
+                        <div class="mt-2">
+                            <label>Fecha de Lanzamiento</label>
+                            <input required class="form-control" type="date" name="fechaLanzamiento" value="<%= movie && movie.fechaLanzamiento ? movie.fechaLanzamiento.toISOString().split('T')[0] : '' %>">
+                            <% if (errors?.fechaLanzamiento) { %>
+                                <div class="error-label">
+                                    Por favor ingrese una fecha de lanzamiento
+                                </div>
+                            <% } %>
+                        </div>
+
+                        <div class="mt-2">
+                            <label>Calificación</label>
+                            <!-- Cambiamos el input para aceptar decimales -->
+                            <input required class="form-control" type="number" step="0.1" name="calificacion" placeholder="Calificación" value="<%= movie && movie.calificacion %>">
+                            <% if (errors?.calificacion) { %>
+                                <div class="error-label">
+                                    Por favor ingrese una calificación válida (puede ser un número con decimales)
+                                </div>
+                            <% } %>
+                        </div>
+
+                        <div class="mt-2">
+                            <label>Link del Tráiler</label>
+                            <!-- Añadimos el campo para el link del tráiler -->
+                            <input class="form-control" type="url" name="linkTrailer" placeholder="Link del tráiler" value="<%= movie && movie.linkTrailer %>">
+                            <% if (errors?.linkTrailer) { %>
+                                <div class="error-label">
+                                    Por favor ingrese un enlace válido
+                                </div>
+                            <% } %>
+                        </div>
+
+                        <div class="mt-2">
+                            <input class="btn btn-primary" type="submit" value="<%= movie ? 'Actualizar' : 'Crear' %>">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../../components/footer.ejs') %>

@@ -1,0 +1,107 @@
+<%- include('../../components/header.ejs') %>
+
+<div class="container mt-5">
+    <div class="card mx-auto" style="width: 80%; height: 60%;">
+        <div class="row g-0 h-100" style="height: 100%;"> <!-- Asegúrate de que el row tenga altura definida -->
+            <!-- Lado izquierdo: Imagen de la película -->
+            <div class="col-md-6 h-100 d-flex align-items-center justify-content-center"> <!-- Agregamos d-flex para centrar la imagen -->
+                <img src="/images/movies/<%= movie.id %>.jpg" 
+                     onerror="this.onerror=null;this.src='/images/movies/nophoto.jpg';" 
+                     alt="Foto de la película" class="movie-img" 
+                     style="max-width: 80%; height: auto; padding: 25px; margin: 25px;" />
+            </div>
+
+            <!-- Lado derecho: Detalles de la película -->
+            <div class="col-md-6 d-flex flex-column " style="padding-top: 2%; padding-bottom: 2%;">
+                <div class="card-body d-flex flex-column flex-grow-1" style="height: 100%;">
+                    <div class="mb-3">
+                        <h5 class="card-title" style="font-size: 30px;"><%= movie.nombre %></h5>
+                    </div>
+                    <div class="mb-3" style="height: 20px;">
+                        <h5 class="card-title" style="height: 20px;">🍅<%= movie.calificacion * 10 %> %</h5>
+                    </div>
+                    <div>
+                        <p class="card-text"><%= movie.sinopsis %></p>
+                    </div>
+
+                    <!-- Div para el tráiler -->
+                    <div class="mt-3 flex-grow-1">
+                        <h5>Tráiler</h5>
+                        <iframe src="https://www.youtube.com/embed/<%= movie.linkTrailer.split('v=')[1] %>" 
+                                width="100%" 
+                                height="100%" 
+                                frameborder="0" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botón para desplegar el reparto -->
+    <div class="mt-4">
+        <button class="btn btn-primary" id="repartoButton" data-movie-id="<%= movie.id %>">
+            Reparto
+        </button>
+        <div class="mt-2">
+            <div id="repartoPanel" class="card card-body">
+                <p id="repartoMessage">Haz clic en el botón para ver el reparto.</p>
+                <ul id="repartoList" class="list-group" style="display: none;"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../../components/footer.ejs') %>
+
+<!-- Script de Bootstrap y jQuery y popper -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#repartoButton').on('click', function() {
+            // Obtener el ID de la película desde el atributo data-movie-id
+            var movieId = $(this).data('movie-id');
+            var repartoUrl = `http://localhost:3000/reparto/${movieId}/personas`;
+
+            // Realizar una solicitud AJAX a la API para obtener el reparto
+            $.ajax({
+                url: repartoUrl,
+                method: 'GET',
+                success: function(response) {
+                    // Limpiar el contenido 
+                    $('#repartoList').empty();
+
+                    // Verificar si la respuesta tiene personas
+                    if (response.length > 0) {
+                        $('#repartoMessage').hide(); 
+                        $('#repartoList').show();    
+                        // Iterar sobre el reparto y añadir cada persona
+                        response.forEach(function(persona) {
+                            $('#repartoList').append(`
+                                <li class="list-group-item d-flex align-items-center">
+                                    <img src="/images/profiles/${persona.id}.jpg" 
+                                         onerror="this.onerror=null;this.src='/images/personas/nophoto.jpg';" 
+                                         alt="Foto de ${persona.nombre}" 
+                                         style="width: 50px; height: 50px; border-radius: 50%; margin-right: 15px;" />
+                                   <span>${persona.nombre} ${persona.apellido}</span>
+                                </li>
+                            `);
+                        });
+                    } else {
+                        // Mostrar el mensaje cuando no hay personas en el reparto
+                        $('#repartoMessage').text('No hay reparto disponible para esta película.');
+                        $('#repartoList').hide(); // Asegurarse de que la lista esté oculta si está vacía
+                    }
+                },
+                error: function() {
+                    // Manejar errores de la solicitud AJAX
+                    $('#repartoMessage').text('Hubo un error al cargar el reparto. Inténtalo de nuevo más tarde.');
+                    $('#repartoList').hide(); // Ocultar la lista en caso de error
+                }
+            });
+        });
+    });
+</script>

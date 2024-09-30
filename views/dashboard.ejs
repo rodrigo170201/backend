@@ -1,0 +1,31 @@
+<%- include('../components/header.ejs') %>
+
+
+<div class="container">
+    <div class="content"> <!-- Contenedor para el contenido principal -->
+        <div class="row">
+            <div class="col mt-3">
+                <h5 class="card-title">Bienvenido</h5>
+            </div>
+        </div>
+    </div>
+
+    <%- include('../components/footer.ejs') %> <!-- Incluye el footer aquí -->
+</div>
+
+<style>
+    html, body {
+        height: 100%; 
+        margin: 0;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column; 
+        height: 100vh; 
+    }
+
+    .content {
+        flex: 1; 
+    }
+</style>

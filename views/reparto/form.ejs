@@ -1,0 +1,67 @@
+<%- include('../../components/header.ejs') %>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6 col-md-8 col-sm-10 col-xxl-4">
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h5 class="card-title"><%= reparto ? 'Actualizar' : 'Agregar persona a un' %> Reparto</h5>
+                    <form method="post" action="/reparto<%= reparto ? '/' + reparto.id + '/update' : '/create' %>">
+                        <% if (errors) { %>
+                            <div class="alert alert-warning">
+                                <%= errors.message %>
+                            </div>
+                        <% } %>
+                        
+                        <!-- Selector de Película -->
+                        <div class="mt-2">
+                            <label>Película</label>
+                            <select required class="form-control" name="movieId">
+                                <% movies.forEach(movie => { %>
+                                    <option value="<%= movie.id %>" <%= reparto && reparto.movieId === movie.id ? 'selected' : '' %>><%= movie.nombre %></option>
+                                <% }); %>
+                            </select>
+                            <% if (errors?.movieId) { %>
+                                <div class="error-label">
+                                    Por favor seleccione una película
+                                </div>
+                            <% } %>
+                        </div>
+
+                        <!-- Selector de Persona -->
+                        <div class="mt-2">
+                            <label>Persona</label>
+                            <select required class="form-control" name="personaId">
+                                <% personas.forEach(persona => { %>
+                                    <option value="<%= persona.id %>" <%= reparto && reparto.personaId === persona.id ? 'selected' : '' %>><%= persona.nombre + ' ' + persona.apellido %></option>
+                                <% }); %>
+                            </select>
+                            <% if (errors?.personaId) { %>
+                                <div class="error-label">
+                                    Por favor seleccione una persona
+                                </div>
+                            <% } %>
+                        </div>
+
+                        <!-- Checkbox para esDirector -->
+                        <div class="mt-2 form-check">
+                            <input type="checkbox" class="form-check-input" name="esDirector" id="esDirector" <%= reparto && reparto.esDirector ? 'checked' : '' %>>
+                            <label class="form-check-label" for="esDirector">
+                                Es Director
+                            </label>
+                            <div class="form-text">
+                                Marcar si esta persona es el director de la película.
+                            </div>
+                        </div>
+
+                        <div class="mt-2">
+                            <input class="btn btn-primary" type="submit" value="<%= reparto ? 'Actualizar' : 'Crear' %> Reparto">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../../components/footer.ejs') %>

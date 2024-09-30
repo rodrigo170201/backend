@@ -1,0 +1,106 @@
+<%- include('../../components/header.ejs') %>
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Películas de <%= persona.nombre %> <%= persona.apellido%></h1>
+    <div class="movies-list">
+        <!-- Iterar sobre la lista de películas de la persona -->
+        <% peliculas.forEach(pelicula => { %>
+        <div class="movie-card">
+            <div class="movie-image-container">
+                <a href="/movies/<%= pelicula.id %>">
+                    <img src="/images/movies/<%= pelicula.id %>.jpg"
+                         onerror="this.onerror=null;this.src='/images/movies/nophoto.jpg';"
+                         alt="Foto de la película" class="movie-img" />
+                </a>
+            </div>
+            <div class="card-body text-center">
+                <div class="movie-ratings">
+                    <span class="badge badge-success">🍅</span>
+                    <p><%= pelicula.calificacion * 10 %>%</p>
+                </div>
+                <p class="card-title mt-2" style="font-size: 24px;"><%= pelicula.nombre %></p>
+            </div>
+        </div>
+        <% }) %>
+    </div>
+</div>
+
+<%- include('../../components/footer.ejs') %>
+
+<style>
+    /* Mantener el diseño flexible */
+    html, body {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .container {
+        flex: 1;
+        margin-top: 2rem;
+    }
+
+    .movies-list {
+        display: flex;
+        overflow-x: auto; /* Hacer que las películas se deslicen horizontalmente */
+        padding: 10px 0;
+        scroll-behavior: smooth;
+        height: 400px; /* Ajusta la altura según sea necesario */
+    }
+
+    .movie-card {
+        flex: 0 0 30%; /* Cada tarjeta ocupará aproximadamente el 30% del ancho */
+        margin: 0 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 95%;
+        padding: 10px;
+        overflow: hidden;
+        border: 1px solid #ccc; /* Agregar borde para separar las tarjetas */
+        border-radius: 5px; /* Bordes redondeados */
+        background-color: #fff; /* Color de fondo de las tarjetas */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
+    }
+
+    .movie-image-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 200px; /* Altura estándar para la imagen */
+        overflow: hidden; /* Para ocultar cualquier parte que sobresalga */
+    }
+
+    .movie-img {
+        max-height: 100%; /* Limitar la altura máxima de la imagen */
+        max-width: 100%; /* Limitar el ancho máximo de la imagen */
+        object-fit: cover; /* Mantener la relación de aspecto y cubrir el contenedor */
+    }
+
+    .movie-ratings {
+        display: flex;
+        justify-content: left;
+        gap: 10px;
+    }
+
+    .badge {
+        font-size: 14px;
+    }
+
+    .card-buttons {
+        display: flex;
+        justify-content: center; /* Centrar los botones */
+        margin-top: 10px;
+    }
+
+    .btn {
+        font-size: 14px;
+        padding: 5px 10px;
+        margin: 0 5px; /* Espacio entre botones */
+    }
+
+    .btn-edit i, .btn-delete i, .btn-imagen i {
+        margin-right: 5px;
+    }
+</style>

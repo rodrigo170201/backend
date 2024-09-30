@@ -1,0 +1,69 @@
+<%- include('../../components/header.ejs') %>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="card mt-3">
+                <div class="card-body">
+                    <div class="card-title">
+                        <h3>Lista de directores y actores</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Foto</th>                 
+                                    <th>Nombre</th>
+                                    <th>Apellido</th>
+                                    <th>Fecha de Nacimiento</th>
+                                    <th>Lugar de Nacimiento</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th> 
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% personas.forEach(persona => { %>
+                                    <tr>
+                                        <!-- Columna para mostrar la foto de la persona -->
+                                        <td>
+                                            <a href="/personas/<%= persona.id %>/peliculas">
+                                            <img src="/images/profiles/<%= persona.id %>.jpg" 
+                                                 onerror="this.onerror=null;this.src='/images/profiles/nophoto.jpg';" 
+                                                 alt="Foto de Persona" class="persona-img" 
+                                                 style="width: 100px; height: auto;" />
+                                            </a>
+                                        </td>
+                                        <td><%= persona.nombre %></td>
+                                        <td><%= persona.apellido %></td>
+                                        <td><%= persona.fechaNacimiento ? persona.fechaNacimiento.toISOString().split('T')[0] : 'N/A' %></td>
+                                        <td><%= persona.lugarNacimiento || 'N/A' %></td>
+
+                                        <!-- Botón para cargar foto -->
+                                        <td>
+                                            <a class="btn btn-success" href="/personas/<%= persona.id %>/upload-photo">Cargar Foto</a>
+                                        </td>
+
+                                        <!-- Botón para editar la persona -->
+                                        <td>
+                                            <a class="btn btn-primary" href="/personas/<%= persona.id %>/edit">Editar</a>
+                                        </td>
+
+                                        <!-- Botón para eliminar la persona -->
+                                        <td>
+                                            <form method="post" action="/personas/<%= persona.id %>/delete" style="display:inline;" onsubmit="return confirm('¿Está seguro de que desea eliminar esta persona?')">
+                                                <input class="btn btn-danger" type="submit" value="Eliminar">
+                                            </form>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../../components/footer.ejs') %>

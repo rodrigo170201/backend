@@ -1,0 +1,53 @@
+<%- include('../../components/header.ejs') %>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6 col-md-8 col-sm-10 col-xxl-4">
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h5 class="card-title">Ingrese la Foto de la Película</h5>
+                    <form class="needs-validation" method="post" action="/movies/<%= movie.id %>/upload-photo" enctype="multipart/form-data">
+                        <% if (errors) { %>
+                            <div class="alert alert-warning">
+                                <%= errors.message %>
+                            </div>
+                        <% } %>
+                        <!-- Imagen actual de la película -->
+                        <div>
+                            <img src="/images/movies/<%= movie.id %>.jpg" 
+                                 onerror="this.onerror=null;this.src='/images/movies/nophoto.jpg';" 
+                                 alt="Foto de la película" class="movie-img" 
+                                 style="width: 100px; height: auto;" />
+                        </div>
+                        
+                        <!-- Campo para seleccionar la nueva foto -->
+                        <div class="mt-2 has-validation">
+                            <label>Foto de la película</label>
+                            <input required class="form-control" type="file" name="photo" />
+                            <% if (errors?.photo) { %>
+                                <div class="error-label">
+                                    Por favor seleccione un archivo
+                                </div>
+                            <% } %>
+                        </div>
+
+                        <!-- Botón de enviar -->
+                        <div class="mt-2">
+                            <input class="btn btn-primary" type="submit" value="Enviar">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../../components/footer.ejs') %>
+
+<!-- Estilos opcionales -->
+<style>
+    .movie-img {
+        width: 150px;
+        height: auto;
+    }
+</style>
